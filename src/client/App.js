@@ -5,12 +5,14 @@ import Home from './Home';
 import Secret from './Secret';
 import Login from './Login';
 import Register from './Register';
+import FolderList from './FolderList';
+import PostsList from './PostsList';
 import axios from 'axios';
 
 class App extends Component {
   constructor() {
     super();
-    this.state = {loggedIn: false};
+    this.state = {loggedIn: false, user: {}};
     this.logout = this.logout.bind(this);
     this.login = this.login.bind(this);
   }
@@ -25,8 +27,8 @@ class App extends Component {
     return null;
   }
 
-  login() {
-    this.setState({loggedIn: true});
+  login(user) {
+    this.setState({loggedIn: true, user: user});
   }
 
   render() {
@@ -35,6 +37,7 @@ class App extends Component {
         <ul>
           <li><Link to="/">Home</Link></li>
           <li><Link to="/secret">Secret</Link></li>
+          <li><Link to={`/user/${this.state.user._id}/folders`}>Folder</Link></li>
           {!this.state.loggedIn && <li><Link to="/login">Login</Link></li>}
           {!this.state.loggedIn && <li><Link to="/register">Register</Link></li>}
           {this.state.loggedIn && <li><Link to="/logout">Logout</Link></li>}
@@ -43,6 +46,8 @@ class App extends Component {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/secret" component={withAuth(Secret)} />
+          <Route exact path="/user/:id/folders"  component={withAuth(FolderList)} />
+          <Route path="/posts/:id" component={withAuth(PostsList)} />
           <Route path="/register" component={Register} />
           <Route path="/login" render={(props) => <Login {...props} handleLogin={this.login} />} />
           <Route path="/logout" render={this.logout}/>
@@ -53,3 +58,4 @@ class App extends Component {
 }
 
 export default App;
+ 

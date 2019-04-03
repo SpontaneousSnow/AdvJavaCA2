@@ -5,7 +5,7 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username : '',
+      email : '',
       password: ''
     };
 
@@ -25,8 +25,9 @@ export default class Login extends Component {
     axios.post('/api/authenticate', this.state)
       .then(res => {
         if (res.status === 200) {
+         
           // run the login function in the parent component
-          this.props.handleLogin();
+          this.props.handleLogin(res.data);
           // redirect to /
           this.props.history.push('/');
         } else {
@@ -45,10 +46,10 @@ export default class Login extends Component {
       <form onSubmit={this.onSubmit}>
         <h1>Login Below!</h1>
         <input
-          type="text"
-          name="username"
-          placeholder="Enter username"
-          value={this.state.username}
+          type="email"
+          name="email"
+          placeholder="Enter email"
+          value={this.state.email}
           onChange={this.handleInputChange}
           required
         />

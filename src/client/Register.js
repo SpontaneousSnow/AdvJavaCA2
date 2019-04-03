@@ -5,9 +5,10 @@ export default class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username : '',
+      email : '',
+      username: '',
       password: '',
-      name: '',
+      fName: '',
       age: ''
     };
 
@@ -44,6 +45,14 @@ export default class Register extends Component {
       <form onSubmit={this.onSubmit}>
         <h1>Register Below!</h1>
         <input
+          type="email"
+          name="email"
+          placeholder="Enter email"
+          value={this.state.email}
+          onChange={this.handleInputChange}
+          required
+        />
+        <input
           type="text"
           name="username"
           placeholder="Enter username"
@@ -61,9 +70,9 @@ export default class Register extends Component {
         />
         <input
           type="text"
-          name="name"
-          placeholder="Enter name"
-          value={this.state.name}
+          name="fName"
+          placeholder="Enter Full Name"
+          value={this.state.fName}
           onChange={this.handleInputChange}
           required
         />
