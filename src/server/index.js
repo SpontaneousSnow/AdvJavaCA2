@@ -6,6 +6,8 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const User = require('./models/User');
+const Comment = require('./models/Comment');
+const Posts = require('./models/Posts');
 const Folder = require('./models/Folder');
 const withAuth = require('./middleware');
 
@@ -17,7 +19,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-const mongo_uri = 'mongodb://localhost/instagram';
+//const mongo_uri = 'mongodb://localhost/instagram';
+const mongo_uri = 'mongodb+srv://simon:admin@advjavaca2-shkv6.mongodb.net/instagram?retryWrites=true';
 mongoose.connect(mongo_uri, { useNewUrlParser: true }, function(err) {
   if (err) {
     throw err;
@@ -110,7 +113,7 @@ app.get('/api/posts/:id', withAuth, function(req, res) {
   });
 });
 
-app.get('/api/:id/folders', function(req, res) {
+app.get('/api/folders', function(req, res) {
   User.findOne({_id: req.params.id}, function(err, data) {
     
     if (err) throw err;
@@ -134,6 +137,27 @@ app.get('/api/folders/:id/posts', function(req, res) {
     });
   });
 });
+
+app.get('/api/comments', function(req, res) {
+  Comment.find({}, function(err, data) {
+    if (err) throw err;
+
+    res.send(data);
+  });
+});
+
+app.get('/api/posts/:id/comments', function(req, res) {
+  Posts.findOne({_id: req.params.id}, function(err, data) {
+    if (err) throw err;
+
+    Comment.find({lecturer_id: data._id}, function(err, comments) {
+      if (err) throw err;
+
+      res.send(comments);
+    });
+  });
+});
+
 
 app.post('/api/register', function(req, res) {
   const { email, username, password, fName, age } = req.body;

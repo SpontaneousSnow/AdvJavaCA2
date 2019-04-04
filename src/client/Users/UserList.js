@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import User from './User';
 import axios from 'axios';
-import './app.css';
+import '../app.css';
 
 class UserList extends Component {
   constructor(props) {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './app.css';
+import '../app.css';
 
 class FolderList extends Component {
   constructor(props) {

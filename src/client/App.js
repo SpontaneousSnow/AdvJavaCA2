@@ -5,10 +5,11 @@ import Home from './Home';
 import Secret from './Secret';
 import Login from './Login';
 import Register from './Register';
-import FolderList from './FolderList';
-import CreateFolder from './CreateFolder';
-import PostsList from './PostsList';
-import UserList from './UserList';
+import FolderList from './Folders/FolderList';
+import CreateFolder from './Folders/CreateFolder';
+import PostsList from './Posts/PostsList';
+import UserList from './Users/UserList';
+import CommentList from './Comments/CommentList';
 import axios from 'axios';
 
 class App extends Component {
@@ -57,7 +58,9 @@ class App extends Component {
           <Route exact path="/user/:id/folders"  component={withAuth(FolderList)} />
           <Route path="/create-folder" component={CreateFolder}/>
           <Route path="/posts" component={withAuth(PostsList)} />
-          <Route path="/posts/:id" component={withAuth(PostsList)} />
+          <Route path="/comments/:id" component={withAuth(CommentList)} />
+
+          {/* <Route path="/posts/:id" component={withAuth(PostsList)} />*/}
           <Route path="/register" component={Register} />
           <Route path="/login" render={(props) => <Login {...props} handleLogin={this.login} />} />
           <Route path="/logout" render={this.logout}/>
