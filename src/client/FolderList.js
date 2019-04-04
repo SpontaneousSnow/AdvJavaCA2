@@ -8,15 +8,17 @@ class FolderList extends Component {
     super(props);
     this.state = { folders: [] };
 
-    this.updateFolders = this.update.bind(this);
+    this.updateFolders = this.updateFolders.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
     this.updateFolders();
-    axios.get(`api/user/${this.props.match.params.id}/folders`)
+    // axios.get(`api/user/${this.props.match.params.id}/folders`)
+    axios.get('api/users/folders')
       .then(response => {
         this.setState({ folders: response.data });
+        console.log(response.data);
       })
       .catch(error => {
         console.log(error);
@@ -24,7 +26,7 @@ class FolderList extends Component {
   }
 
   updateFolders() {
-    axios.get('api/folders')
+    axios.get('api/users/folders')
       .then(response => {
         this.setState({ folders: response.data });
       })
@@ -35,7 +37,7 @@ class FolderList extends Component {
 
   handleDelete(folderId) {
     axios
-      .delete('api/folders', {
+      .delete('api/users/folders', {
         data: {
           id: folderId
         }

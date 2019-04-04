@@ -26,7 +26,7 @@ mongoose.connect(mongo_uri, { useNewUrlParser: true }, function(err) {
   }
 });
 
-server.get('/api/users', (req, res) => {
+app.get('/api/users', (req, res) => {
   User.find({}, (err, result) => {
     if (err) throw err;
 
@@ -35,7 +35,7 @@ server.get('/api/users', (req, res) => {
   });
 });
 
-server.get('/api/users/:id', (req, res) => {
+app.get('/api/users/:id', (req, res) => {
   User.findOne({_id: new ObjectID(req.params.id) }, (err, result) => {
     if (err) throw err;
 
@@ -44,7 +44,7 @@ server.get('/api/users/:id', (req, res) => {
   });
 });
 
-server.delete('/api/users', (req, res) => {
+app.delete('/api/users', (req, res) => {
   User.deleteOne( {_id: new ObjectID(req.body.id) }, err => {
     if (err) return res.send(err);
 
@@ -53,7 +53,7 @@ server.delete('/api/users', (req, res) => {
   });
 });
 
-server.put('/api/users', (req, res) => {
+app.put('/api/users', (req, res) => {
   // get the ID of the user to be updated
   const id  = req.body._id;
   // remove the ID so as not to overwrite it when updating
@@ -82,14 +82,14 @@ app.get('/api/secret', withAuth, function(req, res) {
   res.send('The password is potato');
 });
 
-app.get('/api/folders', withAuth, function(req, res) {
+app.get('/api/users/folders', withAuth, function(req, res) {
   Folder.find({}, function(err, data) {
     if (err) throw err;
     res.send(data);
   });
 });
 
-app.get('/api/folders/:id', withAuth, function(req, res) {
+app.get('/api/users/folders/:id', withAuth, function(req, res) {
   Folder.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
     res.send(data);
