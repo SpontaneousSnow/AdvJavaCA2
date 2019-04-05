@@ -19,8 +19,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-//const mongo_uri = 'mongodb://localhost/instagram';
-const mongo_uri = 'mongodb+srv://simon:admin@advjavaca2-shkv6.mongodb.net/instagram?retryWrites=true';
+const mongo_uri = 'mongodb://localhost/instagram';
+// const mongo_uri = 'mongodb+srv://simon:admin@advjavaca2-shkv6.mongodb.net/instagram?retryWrites=true';
 mongoose.connect(mongo_uri, { useNewUrlParser: true }, function(err) {
   if (err) {
     throw err;
@@ -81,9 +81,6 @@ app.get('/api/home/', function(req, res) {
   res.send('welcome');
 });
 
-app.get('/api/secret', withAuth, function(req, res) {
-  res.send('The password is potato');
-});
 
 app.get('/api/users/folders', withAuth, function(req, res) {
   Folder.find({}, function(err, data) {
@@ -92,10 +89,22 @@ app.get('/api/users/folders', withAuth, function(req, res) {
   });
 });
 
-app.get('/api/users/folders/:id', withAuth, function(req, res) {
-  Folder.findOne({_id: req.params.id}, function(err, data) {
+// app.get('/api/users/:id/folders/', withAuth, function(req, res) {
+//   Folder.findOne({_id: req.params.id}, function(err, data) {
+//     if (err) throw err;
+//     res.send(data);
+//   });
+// });
+
+app.get('/api/users/:id/folders', function(req, res) {
+  User.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
-    res.send(data);
+
+    Folder.find({user_id: data._id}, function(err, folders) {
+      if (err) throw err;
+
+      res.send(folders);
+    });
   });
 });
 
@@ -106,23 +115,30 @@ app.get('/api/posts', withAuth, function(req, res) {
   });
 });
 
-app.get('/api/posts/:id', withAuth, function(req, res) {
-  Posts.findOne({_id: req.params.id}, function(err, data) {
+app.get('/api/folders/:id/posts', function(req, res) {
+  Folder.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
-    res.send(data);
+
+    Post.find({folder_id: data._id}, function(err, posts) {
+      if (err) throw err;
+
+      res.send(posts);
+    });
   });
 });
 
+// app.get('/api/posts/:id', withAuth, function(req, res) {
+//   Posts.findOne({_id: req.params.id}, function(err, data) {
+//     if (err) throw err;
+//     res.send(data);
+//   });
+// });
+
 app.get('/api/folders', function(req, res) {
-  User.findOne({_id: req.params.id}, function(err, data) {
-    
+  Folder.find({}, function(err, data) {
     if (err) throw err;
 
-    Folder.find({user_id: data._id}, function(err, folders) {
-      if (err) throw err;
-      console.log(folders);
-      res.send(folders);
-    });
+    res.send(data);
   });
 });
 
@@ -150,11 +166,21 @@ app.get('/api/posts/:id/comments', function(req, res) {
   Posts.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
 
-    Comment.find({lecturer_id: data._id}, function(err, comments) {
+    Comment.find({post_id: data._id}, function(err, comments) {
       if (err) throw err;
 
       res.send(comments);
     });
+  });
+});
+
+app.get('/api/user/:id', function(req, res) {
+  if (err) throw err;
+
+  User.find({_id: data._id}, function(err, users) {
+    if (err) throw err;
+
+    res.send(users);
   });
 });
 

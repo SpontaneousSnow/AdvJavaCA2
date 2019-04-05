@@ -9,6 +9,7 @@ import FolderList from './Folders/FolderList';
 import CreateFolder from './Folders/CreateFolder';
 import PostsList from './Posts/PostsList';
 import UserList from './Users/UserList';
+import UserView from './Users/UserView';
 import CommentList from './Comments/CommentList';
 import axios from 'axios';
 
@@ -37,25 +38,23 @@ class App extends Component {
   render() {
     return (
       <div>
-        <ul>
+        <ul className="header">
           <li><Link to="/">Home</Link></li>
-          <li><Link to="/secret">Secret</Link></li>
           <li><Link to="/users">Users</Link></li>
-          <li><Link to="/posts">Posts</Link></li>
           <li><Link to="/create-folder">Create Folder</Link></li>
           {/* <li><Link to={`/user/${this.state.user._id}/folders`}>Folder</Link></li>*/ }
-          <li><Link to='/users/folders'>Folder</Link></li>
+          <li><Link to='/folders'>Folder</Link></li>
 
           {!this.state.loggedIn && <li><Link to="/login">Login</Link></li>}
           {!this.state.loggedIn && <li><Link to="/register">Register</Link></li>}
           {this.state.loggedIn && <li><Link to="/logout">Logout</Link></li>}
         </ul>
 
-        <Switch>
+        <Switch className="content">
           <Route path="/" exact component={Home} />
-          <Route path="/secret" component={withAuth(Secret)} />
-          <Route path="/users" component={UserList} />
-          <Route exact path="/user/:id/folders"  component={withAuth(FolderList)} />
+          <Route exact path="/users" component={UserList} />
+          <Route path="/users/:id" component={UserView} />
+          <Route path="/folders/:id"  component={withAuth(FolderList)} />
           <Route path="/create-folder" component={CreateFolder}/>
           <Route path="/posts" component={withAuth(PostsList)} />
           <Route path="/comments/:id" component={withAuth(CommentList)} />

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import User from './User';
+import UserDetailed from './UserDetailed';
 import axios from 'axios';
 import '../app.css';
 
-class UserList extends Component {
+class UserView extends Component {
   constructor(props) {
     super(props);
     // store the array of users in state
-    this.state = { users: [] };
+    this.state = { user: {} };
 
     this.updateUsers = this.updateUsers.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -17,9 +17,9 @@ class UserList extends Component {
   componentDidMount() {
     // when the component mounts, fetch the user data from the server
     this.updateUsers();
-    axios.get('/api/users')
+    axios.get(`/api/users/${this.props.match.params.id}`)
       .then(response => {
-        this.setState({ users: response.data });
+        this.setState({ user: response.data });
       })
       .catch(error => {
         console.log(error);
@@ -28,7 +28,7 @@ class UserList extends Component {
 
   updateUsers() {
     // make a GET request to the server for the user data, store it in state
-    axios.get('api/users')
+    axios.get(`/api/users/${this.props.match.params.id}`)
       .then(response => {
         this.setState({ users: response.data });
       })
@@ -40,7 +40,7 @@ class UserList extends Component {
   handleDelete(userId) {
     // make a DELETE request to the server to remove the user with this userId
     axios
-      .delete('api/users', {
+      .delete(`/api/users/${this.props.match.params.id}`, {
         data: {
           id: userId
         }
@@ -55,26 +55,24 @@ class UserList extends Component {
   }
 
   render() {
+    console.log(this.state);
     // for each user object, produce a User Component
-    const userList = this.state.users.map(u => (
-      <User
-        key={u._id}
-        id={u._id}
-        username={u.username}
-        fName={u.fName}
-        age={u.age}
-      />
-    ));
-
     return (
       <section className="section">
         <div>
-          <h2>All Users</h2>
-          <div>{userList}</div>
+          <div>
+            <UserDetailed     
+              key={this.state.user._id}
+              id={this.state.user._id}
+              username={this.state.user.username}
+              fName={this.state.user.fName}
+              age={this.state.user.age}
+            />
+          </div>
         </div>
       </section>
     );
   }
 }
 
-export default UserList;
+export default UserView;

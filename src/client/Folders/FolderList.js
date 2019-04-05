@@ -8,14 +8,14 @@ class FolderList extends Component {
     super(props);
     this.state = { folders: [] };
 
-    this.updateFolders = this.updateFolders.bind(this);
+    // this.updateFolders = this.updateFolders.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
-    this.updateFolders();
+    // this.updateFolders();
     // axios.get(`api/user/${this.props.match.params.id}/folders`)
-    axios.get('api/users/folders')
+    axios.get(`/api/users/${this.props.match.params.id}/folders`)
       .then(response => {
         this.setState({ folders: response.data });
         console.log(response.data);
@@ -25,15 +25,15 @@ class FolderList extends Component {
       });
   }
 
-  updateFolders() {
-    axios.get('api/users/folders')
-      .then(response => {
-        this.setState({ folders: response.data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
+  // updateFolders() {
+  //   axios.get('api/users/folders')
+  //     .then(response => {
+  //       this.setState({ folders: response.data });
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // }
 
   handleDelete(folderId) {
     axios

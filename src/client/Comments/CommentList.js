@@ -10,7 +10,7 @@ class CommentList extends Component {
   }
 
   componentDidMount() {
-    axios.get(`api/posts/${this.props.match.params.id}/comments`)
+    axios.get(`/api/posts/${this.props.match.params.id}/comments`)
       .then(response => {
         this.setState({ comments: response.data });
       })
