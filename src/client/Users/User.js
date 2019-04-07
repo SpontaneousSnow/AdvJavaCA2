@@ -11,7 +11,7 @@ class User extends React.Component {
   render() {
     return (
       <div className="column is-3">
-        <Link to={`/users/${this.props.id}`}>
+        <Link to={`/users/${this.props.id}/folders`}>
           <div className="card" >       
             <div className="card-content">
               <div className="media">

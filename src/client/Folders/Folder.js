@@ -13,7 +13,7 @@ class Folder extends React.Component {
                 <p>{this.props.name}</p>
                 <p>Description: {this.props.description}</p>
                 <p>Size: {this.props.size}</p>
-                <Link to={`/comments/${this.props.id}`}>
+                <Link to={`/posts/${this.props.id}`}>
                   <button type="button">
                     View Posts
                   </button>

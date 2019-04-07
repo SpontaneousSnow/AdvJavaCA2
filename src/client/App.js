@@ -6,6 +6,7 @@ import Secret from './Secret';
 import Login from './Login';
 import Register from './Register';
 import FolderList from './Folders/FolderList';
+import FolderView from './Folders/FolderView';
 import CreateFolder from './Folders/CreateFolder';
 import PostsList from './Posts/PostsList';
 import UserList from './Users/UserList';
@@ -54,7 +55,8 @@ class App extends Component {
           <Route path="/" exact component={Home} />
           <Route exact path="/users" component={UserList} />
           <Route path="/users/:id" component={UserView} />
-          <Route path="/folders/:id"  component={withAuth(FolderList)} />
+          <Route exact path="/folders"  component={withAuth(FolderList)} />
+          <Route path="/folders/:id"  component={withAuth(FolderView)} />
           <Route path="/create-folder" component={CreateFolder}/>
           <Route path="/posts" component={withAuth(PostsList)} />
           <Route path="/comments/:id" component={withAuth(CommentList)} />

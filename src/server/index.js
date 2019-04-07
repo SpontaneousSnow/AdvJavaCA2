@@ -19,8 +19,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-const mongo_uri = 'mongodb://localhost/instagram';
-// const mongo_uri = 'mongodb+srv://simon:admin@advjavaca2-shkv6.mongodb.net/instagram?retryWrites=true';
+// const mongo_uri = 'mongodb://localhost/instagram';
+const mongo_uri = 'mongodb+srv://simon:admin@advjavaca2-shkv6.mongodb.net/instagram?retryWrites=true';
 mongoose.connect(mongo_uri, { useNewUrlParser: true }, function(err) {
   if (err) {
     throw err;
