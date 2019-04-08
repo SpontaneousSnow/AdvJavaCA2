@@ -16,7 +16,7 @@ class EditFolder extends Component {
   componentDidMount() {
     // when this Component mounts, fetch data relating to the user to be edited
     // the user's ID is passed in via the URL and accessed via props
-    axios.get('/api/user/folder/' + this.props.match.params.id)
+    axios.get('/api/users/folders/' + this.props.match.params.id)
       .then(response => {
         this.setState({
           _id: response.data._id,
@@ -43,7 +43,7 @@ class EditFolder extends Component {
 
     // send a PUT request to the server
     // the request includes the state, which is the updated user information
-    axios.put('/api/user/folder', this.state)
+    axios.put('/api/users/folders', this.state)
       .then(res => this.props.history.push('/')) // if successful go to home
       .catch(error => {
         console.log(error);

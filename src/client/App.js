@@ -7,6 +7,7 @@ import Login from './Login';
 import Register from './Register';
 import FolderList from './Folders/FolderList';
 import FolderView from './Folders/FolderView';
+import EditFolder from './Folders/EditFolder';
 import CreateFolder from './Folders/CreateFolder';
 import PostsList from './Posts/PostsList';
 import UserList from './Users/UserList';
@@ -59,6 +60,8 @@ class App extends Component {
           <Route exact path="/users/folders/posts/:id/comments" component={CommentList} />
           {/* <Route path="/users/:id/folders/:id"  component={withAuth(FolderView)} /> */}
           <Route exact path="/users/:id/create-folder" component={CreateFolder}/>
+          <Route exact path="/users/edit-folder/:id" component={EditFolder}/>
+
           <Route path="/posts" component={PostsList} />
           <Route path="/comments/:id" component={withAuth(CommentList)} />
 

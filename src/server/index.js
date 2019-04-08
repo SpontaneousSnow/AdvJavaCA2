@@ -56,6 +56,15 @@ app.delete('/api/users', (req, res) => {
   });
 });
 
+app.delete('/api/users/folders', (req, res) => {
+  User.deleteOne( {_id: new ObjectID(req.body.id) }, err => {
+    if (err) return res.send(err);
+
+    console.log('deleted from database');
+    return res.send({ success: true });
+  });
+});
+
 app.put('/api/users', (req, res) => {
   // get the ID of the user to be updated
   const id  = req.body._id;
@@ -149,7 +158,7 @@ app.get('/api/users/folders/:id/posts', function(req, res) {
 // });
 
 // create new user based on info supplied in request body
-app.post('/api/users/folders', (req, res) => {
+app.post('/api/users/:id/folders', (req, res) => {
   // create a new user object using the Mongoose model and the data sent in the POST
   const folder = new Folder(req.body);
   // save this object to the DB
@@ -158,6 +167,21 @@ app.post('/api/users/folders', (req, res) => {
 
     console.log('created in database');
     res.redirect('/api/users/folders');
+  });
+});
+
+// update user based on info supplied in request body
+app.put('/api/users/folders/:id', (req, res) => {
+  // get the ID of the user to be updated
+  const id  = req.body._id;
+  // remove the ID so as not to overwrite it when updating
+  delete req.body._id;
+  // find a user matching this ID and update their details
+  Folder.updateOne( {_id: new ObjectID(id) }, {$set: req.body}, (err, result) => {
+    if (err) throw err;
+
+    console.log('updated in database');
+    return res.send({ success: true });
   });
 });
 

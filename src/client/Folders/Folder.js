@@ -19,9 +19,10 @@ class Folder extends React.Component {
                   </Link>
                   {this.props.nat ? <p className="subtitle">{this.props.nat}</p> : null}
                   <button type="button" onClick={() => {this.props.handleDelete(this.props.id);}}>
+                   
                     Delete
                   </button>
-                  <Link to={`/edit-folder/${this.props.id}`}>
+                  <Link to={`/users/edit-folder/${this.props.id}`}>
                     <button type="button">
                       Edit
                     </button>
