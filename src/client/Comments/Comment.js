@@ -1,8 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-class Posts extends React.Component {
+class Comment extends React.Component {
 
   // define what happens when this componet gets drawn on the UI
   render() {
@@ -11,18 +10,14 @@ class Posts extends React.Component {
         <div className="card" >       
           <div className="card-content">
             <div className="media">
-              <img margin="0px" height="100" width="100" alt='Photo' src={this.props.url}></img>       
               <div className="media-content">
-                <Link to={`/users/folders/posts/${this.props.id}/comments`}>       
-                  <p>{this.props.name}</p>
-                  <p>genre: {this.props.genre}</p>
-                  <p>Description: {this.props.description}</p>
-                </Link>
+                <p>{this.props.username}</p>
+                <p>Description: {this.props.description}</p>
                 {this.props.nat ? <p className="subtitle">{this.props.nat}</p> : null}
                 <button type="button" onClick={() => {this.props.handleDelete(this.props.id);}}>
                   Delete
                 </button>
-                <Link to={`/users/folders/edit-post/${this.props.id}`}>
+                <Link to={`/users/folders/posts/edit-comment/${this.props.id}`}>
                   <button type="button">
                     Edit
                   </button>
@@ -36,4 +31,4 @@ class Posts extends React.Component {
   }
 }
 
-export default Posts;
+export default Comment;

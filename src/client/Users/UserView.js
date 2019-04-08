@@ -55,7 +55,6 @@ class UserView extends Component {
   }
 
   render() {
-    console.log(this.state);
     // for each user object, produce a User Component
     return (
       <section className="section">

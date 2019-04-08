@@ -15,11 +15,9 @@ class FolderList extends Component {
 
   componentDidMount() {
     this.updateFolders();
-    // axios.get(`api/user/${this.props.match.params.id}/folders`)
     axios.get(`/api/users/${this.props.match.params.id}/folders`)
       .then(response => {
         this.setState({ folders: response.data });
-        console.log(response.data);
       })
       .catch(error => {
         console.log(error);
@@ -38,11 +36,7 @@ class FolderList extends Component {
 
   handleDelete(folderId) {
     axios
-      .delete(`/api/users/${this.props.match.params.id}/folders/${this.props.match.params.id}`, {
-        data: {
-          id: folderId
-        }
-      })
+      .delete(`/api/users/folders/${folderId}`)
       .then(response => {
         this.updateFolders();
       })
@@ -52,7 +46,6 @@ class FolderList extends Component {
   }
 
   render() {
-    console.log(this.props.match.params.id);
     const folderList = this.state.folders.map(u => (
       <Folder
         key={u._id}
@@ -74,21 +67,18 @@ class FolderList extends Component {
               </button>
             </Link>
             <h2>All Folders</h2>
-            <div>{folderList}</div></div> :
-          <h2>No Folders</h2> }
+            <div className="columns is-multiline">{folderList}</div></div> :
+          <div>
+            <h2>No Folders</h2>
+            <Link to={`/users/${this.props.match.params.id}/create-folder`}>
+              <button type="button">
+                Create new folder
+              </button>
+            </Link>
+          </div> }
       </div>
     );
   }
 }
-
-// const Folder = (props) => {
-//   return (
-//     <div>
-//       <h2>{props.name}</h2>
-//       <p>Description: {props.description}</p>
-//       <p>There is {props.size} Posts in this folder</p>
-//     </div>
-//   );
-// };
 
 export default FolderList;

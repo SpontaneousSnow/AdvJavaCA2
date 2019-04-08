@@ -8,9 +8,13 @@ class PostsList extends Component {
   constructor(props) {
     super(props);
     this.state = { posts: [] };
+
+    this.updatePosts = this.updatePosts.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
+    this.updatePosts();
     axios.get(`/api/users/folders/${this.props.match.params.id}/posts`)
       .then(response => {
         this.setState({ posts: response.data });
@@ -20,15 +24,26 @@ class PostsList extends Component {
       });
   }
 
-  // componentDidMount() {
-  //   axios.get('api/posts')
-  //     .then(response => {
-  //       this.setState({ posts: response.data });
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // }
+  updatePosts() {
+    axios.get(`/api/users/folders/${this.props.match.params.id}/posts`)
+      .then(response => {
+        this.setState({ posts: response.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  handleDelete(postId) {
+    axios
+      .delete(`/api/users/folders/posts/${postId}`)
+      .then(response => {
+        this.updatePosts();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
   render() {
     const postsList = this.state.posts.map(u => (
@@ -37,33 +52,34 @@ class PostsList extends Component {
         id={u._id}
         name={u.name}
         genre={u.genre}
-        // url={u.url}
+        url={u.url}
         description={u.description}
-        // likes={u.likes}
-        // comments={u.comments}
+        handleDelete={this.handleDelete}
       />
     ));
 
     return (
       <div>
-        {postsList.length ?
+        {postsList.length  ?
           <div>
+            <Link to={`/users/folders/${this.props.match.params.id}/create-post`}>
+              <button type="button">
+                Create new post
+              </button>
+            </Link>
             <h2>All Posts</h2>
-            <div>{postsList}</div></div> :
-          <h2>No Posts</h2> }
+            <div className="columns is-multiline">{postsList}</div></div> :
+          <div>
+            <h2>No Posts</h2>
+            <Link to={`/users/folders/${this.props.match.params.id}/create-post`}>
+              <button type="button">
+                Create new post
+              </button>
+            </Link>
+          </div> }
       </div>
     );
   }
 }
-
-// const Posts = (props) => {
-//   return (
-//     <div>
-//       <h2>{props.name}</h2>
-//       <p>Description: {props.description}</p>
-//       <p>Genre: {props.genre} </p>
-//     </div>
-//   );
-// };
 
 export default PostsList;

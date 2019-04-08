@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 // Component to represent a single User 'Card'
 // note that the edit button navigates to a new URL (which will load a new Component via React Router)
@@ -12,7 +13,8 @@ class User extends React.Component {
     return (
       <div className="column is-3">
         <Link to={`/users/${this.props.id}/folders`}>
-          <div className="card" >       
+          <div className="card" >
+            <img margin="0px" height="100" width="100" alt='Profile' src={this.props.profile}></img>       
             <div className="card-content">
               <div className="media">
                 <div className="media-content">        
@@ -27,5 +29,12 @@ class User extends React.Component {
     );
   }
 }
+
+User.defaultProps = {
+  username: 'no username',
+  profile: 'https://bit.ly/2GvICQs',
+  fName: 'no name',
+  age: 'no age'
+};
 
 export default User;

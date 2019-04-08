@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-class CreateFolder extends Component {
+class CreateComment extends Component {
   constructor(props) {
     super(props);
     // store form fields in state
-    this.state = {user_id: `${this.props.match.params.id}`,name: '', description: ''};
-    console.log(this.state.user_id);
+    this.state = {post_id: `${this.props.match.params.id}`, username: '', description: ''};
+    console.log(this.state.post_id);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -26,8 +26,8 @@ class CreateFolder extends Component {
 
     // send a POST request to the server
     // the request includes the state, which is the info. for the new user to be created
-    axios.post(`/api/users/${this.props.match.params.id}/folders`, this.state)
-      .then(res => this.props.history.push(`/users/${this.props.match.params.id}/folders`)) // if successful go to home
+    axios.post(`/api/users/folders/posts/${this.props.match.params.id}/comments`, this.state)
+      .then(res => this.props.history.push(`/users/folders/posts/${this.props.match.params.id}/comments`)) // if successful go to home
       .catch(error => {
         console.log(error);
       });
@@ -38,10 +38,10 @@ class CreateFolder extends Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <h2>Create New Folder</h2>
+          <h2>Create New Comment</h2>
           <label>
-            Name:
-            <input type="text" name="name" value={this.state.name} onChange={this.handleChange} />
+            username:
+            <input type="text" name="username" value={this.state.username} onChange={this.handleChange} />
           </label>
           <label>
             Description:
@@ -54,4 +54,4 @@ class CreateFolder extends Component {
   }
 }
 
-export default CreateFolder;
+export default CreateComment;

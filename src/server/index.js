@@ -47,6 +47,46 @@ app.get('/api/users/:id', (req, res) => {
   });
 });
 
+// creates
+app.post('/api/users/:id/folders', (req, res) => {
+  // create a new user object using the Mongoose model and the data sent in the POST
+  const folder = new Folder(req.body);
+  // save this object to the DB
+  folder.save((err, result) => {
+    if (err) throw err;
+
+    console.log('created in database');
+    res.status(200).send({success:true});
+  });
+});
+
+app.post('/api/users/folders/:id/posts', (req, res) => {
+  // create a new user object using the Mongoose model and the data sent in the POST
+  const post = new Posts(req.body);
+  // save this object to the DB
+  post.save((err, result) => {
+    if (err) throw err;
+    res.status(200).send({success:true});
+    console.log('created in database');
+    // res.redirect('/api/users/folders/:id/posts');
+  });
+});
+
+app.post('/api/users/folders/posts/:id/comments', (req, res) => {
+  // create a new user object using the Mongoose model and the data sent in the POST
+  const comment = new Comment(req.body);
+  // save this object to the DB
+  comment.save((err, result) => {
+    if (err) throw err;
+
+    console.log('created in database');
+    res.status(200).send({success:true});
+  });
+});
+
+
+
+// deletes
 app.delete('/api/users', (req, res) => {
   User.deleteOne( {_id: new ObjectID(req.body.id) }, err => {
     if (err) return res.send(err);
@@ -56,8 +96,8 @@ app.delete('/api/users', (req, res) => {
   });
 });
 
-app.delete('/api/users/folders', (req, res) => {
-  User.deleteOne( {_id: new ObjectID(req.body.id) }, err => {
+app.delete('/api/users/folders/:id', withAuth, (req, res) => {
+  Folder.deleteOne( {_id: new ObjectID(req.params.id) }, err => {
     if (err) return res.send(err);
 
     console.log('deleted from database');
@@ -65,6 +105,26 @@ app.delete('/api/users/folders', (req, res) => {
   });
 });
 
+app.delete('/api/users/folders/posts/:id', withAuth, (req, res) => {
+  Posts.deleteOne( {_id: new ObjectID(req.params.id) }, err => {
+    if (err) return res.send(err);
+
+    console.log('deleted from database');
+    return res.send({ success: true });
+  });
+});
+
+app.delete('/api/users/folders/posts/comments/:id', withAuth, (req, res) => {
+  Comment.deleteOne( {_id: new ObjectID(req.params.id) }, err => {
+    if (err) return res.send(err);
+
+    console.log('deleted from database');
+    return res.send({ success: true });
+  });
+});
+
+
+// Updates
 app.put('/api/users', (req, res) => {
   // get the ID of the user to be updated
   const id  = req.body._id;
@@ -79,13 +139,13 @@ app.put('/api/users', (req, res) => {
   });
 });
 
-app.put('/api/users/folders', (req, res) => {
+app.put('/api/users/folders/:id', (req, res) => {
   // get the ID of the user to be updated
   const id  = req.body._id;
   // remove the ID so as not to overwrite it when updating
   delete req.body._id;
   // find a user matching this ID and update their details
-  User.updateOne( {_id: new ObjectID(id) }, {$set: req.body}, (err, result) => {
+  Folder.updateOne( {_id: new ObjectID(id) }, {$set: req.body}, (err, result) => {
     if (err) throw err;
 
     console.log('updated in database');
@@ -93,12 +153,36 @@ app.put('/api/users/folders', (req, res) => {
   });
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.put('/api/users/folders/posts/:id', (req, res) => {
+  // get the ID of the user to be updated
+  const id  = req.body._id;
+  // remove the ID so as not to overwrite it when updating
+  delete req.body._id;
+  // find a user matching this ID and update their details
+  Posts.updateOne( {_id: new ObjectID(id) }, {$set: req.body}, (err, result) => {
+    if (err) throw err;
 
-
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    console.log('updated in database');
+    return res.send({ success: true });
+  });
 });
+
+app.put('/api/users/folders/posts/comments/:id', (req, res) => {
+  // get the ID of the user to be updated
+  const id  = req.body._id;
+  // remove the ID so as not to overwrite it when updating
+  delete req.body._id;
+  // find a user matching this ID and update their details
+  Comment.updateOne( {_id: new ObjectID(id) }, {$set: req.body}, (err, result) => {
+    if (err) throw err;
+
+    console.log('updated in database');
+    return res.send({ success: true });
+  });
+});
+
+app.use(express.static('dist'));
+
 
 app.get('/api/home/', function(req, res) {
   res.send('welcome');
@@ -112,13 +196,6 @@ app.get('/api/users/folders', withAuth, function(req, res) {
   });
 });
 
-// app.get('/api/users/:id/folders/', withAuth, function(req, res) {
-//   Folder.findOne({_id: req.params.id}, function(err, data) {
-//     if (err) throw err;
-//     res.send(data);
-//   });
-// });
-
 app.get('/api/users/:id/folders', function(req, res) {
   User.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
@@ -131,8 +208,22 @@ app.get('/api/users/:id/folders', function(req, res) {
   });
 });
 
+app.get('/api/users/folders/:id', withAuth, function(req, res) {
+  Folder.findOne({_id: req.params.id}, function(err, data) {
+    if (err) throw err;
+    res.send(data);
+  });
+});
+
 app.get('/api/users/folders/posts', withAuth, function(req, res) {
   Posts.find({}, function(err, data) {
+    if (err) throw err;
+    res.send(data);
+  });
+});
+
+app.get('/api/users/folders/posts/:id', withAuth, function(req, res) {
+  Posts.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
     res.send(data);
   });
@@ -150,63 +241,16 @@ app.get('/api/users/folders/:id/posts', function(req, res) {
   });
 });
 
-// app.get('/api/posts/:id', withAuth, function(req, res) {
-//   Posts.findOne({_id: req.params.id}, function(err, data) {
-//     if (err) throw err;
-//     res.send(data);
-//   });
-// });
-
-// create new user based on info supplied in request body
-app.post('/api/users/:id/folders', (req, res) => {
-  // create a new user object using the Mongoose model and the data sent in the POST
-  const folder = new Folder(req.body);
-  // save this object to the DB
-  folder.save((err, result) => {
-    if (err) throw err;
-
-    console.log('created in database');
-    res.redirect('/api/users/folders');
-  });
-});
-
-// update user based on info supplied in request body
-app.put('/api/users/folders/:id', (req, res) => {
-  // get the ID of the user to be updated
-  const id  = req.body._id;
-  // remove the ID so as not to overwrite it when updating
-  delete req.body._id;
-  // find a user matching this ID and update their details
-  Folder.updateOne( {_id: new ObjectID(id) }, {$set: req.body}, (err, result) => {
-    if (err) throw err;
-
-    console.log('updated in database');
-    return res.send({ success: true });
-  });
-});
-
-app.get('/api/folders', function(req, res) {
-  Folder.find({}, function(err, data) {
+app.get('/api/users/folders/posts/comments', function(req, res) {
+  Comment.find({}, function(err, data) {
     if (err) throw err;
 
     res.send(data);
   });
 });
 
-app.get('/api/folders/:id/posts', function(req, res) {
-  Folder.findOne({_id: req.params.id}, function(err, data) {
-    if (err) throw err;
-
-    Posts.find({folder_id: data._id}, function(err, posts) {
-      if (err) throw err;
-
-      res.send(posts);
-    });
-  });
-});
-
-app.get('/api/users/folders/posts/comments', function(req, res) {
-  Comment.find({}, function(err, data) {
+app.get('/api/users/folders/posts/comments/:id', function(req, res) {
+  Comment.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
 
     res.send(data);
@@ -235,10 +279,10 @@ app.get('/api/user/:id', function(req, res) {
   });
 });
 
-
+// Register and Auth
 app.post('/api/register', function(req, res) {
   const { email, username, password, fName, age } = req.body;
-  const user = new User({ email, username, password, fName, age });
+  const user = new User({ email, username, password, profile, fName, age });
   user.save(function(err) {
     if (err) {
       console.log(err);

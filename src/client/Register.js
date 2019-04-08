@@ -8,6 +8,7 @@ export default class Register extends Component {
       email : '',
       username: '',
       password: '',
+      profile: '',
       fName: '',
       age: ''
     };
@@ -65,6 +66,14 @@ export default class Register extends Component {
           name="password"
           placeholder="Enter password"
           value={this.state.password}
+          onChange={this.handleInputChange}
+          required
+        />
+        <input
+          type="text"
+          name="profile"
+          placeholder="URL link to profile photo"
+          value={this.state.profile}
           onChange={this.handleInputChange}
           required
         />

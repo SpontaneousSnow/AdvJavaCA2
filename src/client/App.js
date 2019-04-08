@@ -9,6 +9,10 @@ import FolderList from './Folders/FolderList';
 import FolderView from './Folders/FolderView';
 import EditFolder from './Folders/EditFolder';
 import CreateFolder from './Folders/CreateFolder';
+import CreatePost from './Posts/CreatePost';
+import EditPost from './Posts/EditPost';
+import CreateComment from './Comments/CreateComment';
+import EditComment from './Comments/EditComment';
 import PostsList from './Posts/PostsList';
 import UserList from './Users/UserList';
 import UserView from './Users/UserView';
@@ -44,7 +48,7 @@ class App extends Component {
           <li><Link to="/">Home</Link></li>
           <li><Link to="/users">Users</Link></li>
           {/* <li><Link to={`/user/${this.state.user._id}/folders`}>Folder</Link></li>*/ }
-          <li><Link to='/folders'>Folder</Link></li>
+          <li><Link to='/users/folders'>Folder</Link></li>
           {!this.state.loggedIn && <li><Link to="/login">Login</Link></li>}
           {!this.state.loggedIn && <li><Link to="/register">Register</Link></li>}
           {this.state.loggedIn && <li><Link to="/logout">Logout</Link></li>}
@@ -54,13 +58,17 @@ class App extends Component {
           <Route path="/" exact component={Home} />
           <Route exact path="/users" component={UserList} />
           <Route exact path="/users/:id" component={UserView} />
-          <Route exact path="/users/:id/folders"  component={FolderList} />
+          <Route exact path="/users/folders"  component={FolderList} />
           <Route exact path="/users/:id/folders"  component={FolderList} />
           <Route exact path="/users/folders/:id/posts" component={PostsList} />
           <Route exact path="/users/folders/posts/:id/comments" component={CommentList} />
           {/* <Route path="/users/:id/folders/:id"  component={withAuth(FolderView)} /> */}
           <Route exact path="/users/:id/create-folder" component={CreateFolder}/>
           <Route exact path="/users/edit-folder/:id" component={EditFolder}/>
+          <Route exact path="/users/folders/:id/create-post" component={CreatePost}/>
+          <Route exact path="/users/folders/edit-post/:id" component={EditPost}/>
+          <Route exact path="/users/folders/posts/:id/create-comment" component={CreateComment}/>
+          <Route exact path="/users/folders/posts/edit-comment/:id" component={EditComment}/>
 
           <Route path="/posts" component={PostsList} />
           <Route path="/comments/:id" component={withAuth(CommentList)} />

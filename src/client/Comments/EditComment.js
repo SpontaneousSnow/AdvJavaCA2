@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-class EditFolder extends Component {
+class EditComment extends Component {
   constructor(props) {
     super(props);
     // store information relating to the user in state
     // should match the user object from the API
-    this.state = {_id: '', name: '', description: '',user_id: ''};
+    this.state = {_id: '', username: '', description: '', post_id: ''};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -16,15 +16,14 @@ class EditFolder extends Component {
   componentDidMount() {
     // when this Component mounts, fetch data relating to the user to be edited
     // the user's ID is passed in via the URL and accessed via props
-    axios.get(`/api/users/folders/${this.props.match.params.id}`)
+    axios.get(`/api/users/folders/posts/comments/${this.props.match.params.id}`)
       .then(response => {
         this.setState({
           _id: response.data._id,
-          name: response.data.name,
+          username: response.data.username,
           description: response.data.description,
-          user_id: response.data.user_id
+          post_id: response.data.post_id
         });
-        console.log(this.props.match.params.id);
       })
       .catch(error => {
         console.log(error);
@@ -45,7 +44,7 @@ class EditFolder extends Component {
 
     // send a PUT request to the server
     // the request includes the state, which is the updated user information
-    axios.put(`/api/users/folders/${this.props.match.params.id}`, this.state)
+    axios.put(`/api/users/folders/posts/comments/${this.props.match.params.id}`, this.state)
       .then(res => this.props.history.push('/')) // if successful go to home
       .catch(error => {
         console.log(error);
@@ -59,11 +58,11 @@ class EditFolder extends Component {
         <h2>Edit Folder</h2>
         <form onSubmit={this.handleSubmit}>
           <label>
-            Name:
-            <input type="text" name="name" value={this.state.name} onChange={this.handleChange} />
+            Username:
+            <input type="text" name="username" value={this.state.username} onChange={this.handleChange} />
           </label>
           <label>
-            Image:
+            Description:
             <input type="text" name="description" value={this.state.description} onChange={this.handleChange} />
           </label>
           <input type="submit" value="Submit" />
@@ -73,4 +72,4 @@ class EditFolder extends Component {
   }
 }
 
-export default EditFolder;
+export default EditComment;

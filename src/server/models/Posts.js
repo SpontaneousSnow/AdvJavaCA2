@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const PostsSchema = mongoose.Schema({
   name: String,
   genre: String,
-  // url: String,
+  url: String,
   description: String,
   // likes: Number,
   // Comments: String,

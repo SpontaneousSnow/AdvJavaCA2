@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import SearchBar from '../filters/SearchBar';
 import User from './User';
 import axios from 'axios';
 import '../app.css';
@@ -55,22 +56,39 @@ class UserList extends Component {
   }
 
   render() {
+
     // for each user object, produce a User Component
     const userList = this.state.users.map(u => (
       <User
         key={u._id}
         id={u._id}
         username={u.username}
+        profile={u.profile}
         fName={u.fName}
         age={u.age}
       />
     ));
 
+    // const userList = this.state.users.map((u) => {
+    //   const usernameMatch = u.username.startsWith(this.state.searchText);
+    //   return(usernameMatch) ? (
+    //     <User
+    //       key={u._id}
+    //       id={u._id}
+    //       username={u.username}
+    //       profile={u.profile}
+    //       fName={u.fName}
+    //       age={u.age}
+    //     />
+    //   ) : null;
+    // });
+
     return (
       <section className="section">
         <div>
+          <SearchBar name="searchText" label="Search by username" value={this.state.searchText} handleChange={this.handleChange} placeholder={'e.g. Bob'} />
           <h2>All Users</h2>
-          <div>{userList}</div>
+          <div className="columns is-multiline">{userList}</div>
         </div>
       </section>
     );
