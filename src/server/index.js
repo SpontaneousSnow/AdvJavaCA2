@@ -70,6 +70,20 @@ app.put('/api/users', (req, res) => {
   });
 });
 
+app.put('/api/users/folders', (req, res) => {
+  // get the ID of the user to be updated
+  const id  = req.body._id;
+  // remove the ID so as not to overwrite it when updating
+  delete req.body._id;
+  // find a user matching this ID and update their details
+  User.updateOne( {_id: new ObjectID(id) }, {$set: req.body}, (err, result) => {
+    if (err) throw err;
+
+    console.log('updated in database');
+    return res.send({ success: true });
+  });
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 
@@ -108,18 +122,18 @@ app.get('/api/users/:id/folders', function(req, res) {
   });
 });
 
-app.get('/api/posts', withAuth, function(req, res) {
+app.get('/api/users/folders/posts', withAuth, function(req, res) {
   Posts.find({}, function(err, data) {
     if (err) throw err;
     res.send(data);
   });
 });
 
-app.get('/api/folders/:id/posts', function(req, res) {
+app.get('/api/users/folders/:id/posts', function(req, res) {
   Folder.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
 
-    Post.find({folder_id: data._id}, function(err, posts) {
+    Posts.find({folder_id: data._id}, function(err, posts) {
       if (err) throw err;
 
       res.send(posts);
@@ -133,6 +147,19 @@ app.get('/api/folders/:id/posts', function(req, res) {
 //     res.send(data);
 //   });
 // });
+
+// create new user based on info supplied in request body
+app.post('/api/users/folders', (req, res) => {
+  // create a new user object using the Mongoose model and the data sent in the POST
+  const folder = new Folder(req.body);
+  // save this object to the DB
+  folder.save((err, result) => {
+    if (err) throw err;
+
+    console.log('created in database');
+    res.redirect('/api/users/folders');
+  });
+});
 
 app.get('/api/folders', function(req, res) {
   Folder.find({}, function(err, data) {
@@ -154,7 +181,7 @@ app.get('/api/folders/:id/posts', function(req, res) {
   });
 });
 
-app.get('/api/comments', function(req, res) {
+app.get('/api/users/folders/posts/comments', function(req, res) {
   Comment.find({}, function(err, data) {
     if (err) throw err;
 
@@ -162,7 +189,7 @@ app.get('/api/comments', function(req, res) {
   });
 });
 
-app.get('/api/posts/:id/comments', function(req, res) {
+app.get('/api/users/folders/posts/:id/comments', function(req, res) {
   Posts.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
 

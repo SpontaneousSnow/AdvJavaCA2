@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Folder from './Folder';
 import '../app.css';
 
 class FolderList extends Component {
@@ -67,7 +68,7 @@ class FolderList extends Component {
       <div>
         {folderList.length ?
           <div>
-            <Link to={'/create-folder'}>
+            <Link to={`/users/${this.props.match.params.id}/create-folder`}>
               <button type="button">
                 Create new folder
               </button>
@@ -80,14 +81,14 @@ class FolderList extends Component {
   }
 }
 
-const Folder = (props) => {
-  return (
-    <div>
-      <h2>{props.name}</h2>
-      <p>Description: {props.description}</p>
-      <p>There is {props.size} Posts in this folder</p>
-    </div>
-  );
-};
+// const Folder = (props) => {
+//   return (
+//     <div>
+//       <h2>{props.name}</h2>
+//       <p>Description: {props.description}</p>
+//       <p>There is {props.size} Posts in this folder</p>
+//     </div>
+//   );
+// };
 
 export default FolderList;

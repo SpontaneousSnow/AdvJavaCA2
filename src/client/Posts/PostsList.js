@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-// import Posts from './Posts';
+import Posts from './Posts';
 import axios from 'axios';
 import '../app.css';
 
@@ -11,7 +11,7 @@ class PostsList extends Component {
   }
 
   componentDidMount() {
-    axios.get(`/api/folders/${this.props.match.params.id}/posts`)
+    axios.get(`/api/users/folders/${this.props.match.params.id}/posts`)
       .then(response => {
         this.setState({ posts: response.data });
       })
@@ -56,14 +56,14 @@ class PostsList extends Component {
   }
 }
 
-const Posts = (props) => {
-  return (
-    <div>
-      <h2>{props.name}</h2>
-      <p>Description: {props.description}</p>
-      <p>Genre: {props.genre} </p>
-    </div>
-  );
-};
+// const Posts = (props) => {
+//   return (
+//     <div>
+//       <h2>{props.name}</h2>
+//       <p>Description: {props.description}</p>
+//       <p>Genre: {props.genre} </p>
+//     </div>
+//   );
+// };
 
 export default PostsList;

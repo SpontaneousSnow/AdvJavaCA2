@@ -7,7 +7,7 @@ class CreateFolder extends Component {
     super(props);
     // store form fields in state
     this.state = {user_id: `${this.props.match.params.id}`,name: '', description: ''};
-
+    console.log(this.state.user_id);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -26,7 +26,7 @@ class CreateFolder extends Component {
 
     // send a POST request to the server
     // the request includes the state, which is the info. for the new user to be created
-    axios.post('/api/user/:id/folders', this.state)
+    axios.post(`/api/users/${this.props.match.params.id}/folders`, this.state)
       .then(res => this.props.history.push('/')) // if successful go to home
       .catch(error => {
         console.log(error);
