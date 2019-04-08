@@ -47,8 +47,6 @@ class App extends Component {
         <ul className="header">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/users">Users</Link></li>
-          {/* <li><Link to={`/user/${this.state.user._id}/folders`}>Folder</Link></li>*/ }
-          <li><Link to='/users/folders'>Folder</Link></li>
           {!this.state.loggedIn && <li><Link to="/login">Login</Link></li>}
           {!this.state.loggedIn && <li><Link to="/register">Register</Link></li>}
           {this.state.loggedIn && <li><Link to="/logout">Logout</Link></li>}
