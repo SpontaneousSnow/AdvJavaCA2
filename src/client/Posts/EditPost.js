@@ -5,8 +5,7 @@ import axios from 'axios';
 class EditPost extends Component {
   constructor(props) {
     super(props);
-    // store information relating to the user in state
-    // should match the user object from the API
+    // store field information in state
     this.state = {_id: '', name: '', description: '', url:'', genre:'', folder_id: ''};
 
     this.handleChange = this.handleChange.bind(this);
@@ -14,8 +13,7 @@ class EditPost extends Component {
   }
 
   componentDidMount() {
-    // when this Component mounts, fetch data relating to the user to be edited
-    // the user's ID is passed in via the URL and accessed via props
+    // make get request where posts id matches params.id
     axios.get(`/api/users/folders/posts/${this.props.match.params.id}`)
       .then(response => {
         this.setState({
@@ -34,8 +32,6 @@ class EditPost extends Component {
   }
 
   handleChange(event) {
-    // one of the input boxes changed, update the state to match
-    // note: name of the input boxes must match the property names in state
     const name = event.target.name;
     const value = event.target.value;
 
@@ -45,17 +41,15 @@ class EditPost extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    // send a PUT request to the server
-    // the request includes the state, which is the updated user information
+    // make put request where post id matches params.id then push in new information
     axios.put(`/api/users/folders/posts/${this.props.match.params.id}`, this.state)
-      .then(res => this.props.history.push(`/users/folders/posts/${this.props.match.params.id}`)) // if successful go to home
+      .then(res => this.props.history.push(`/users/folders/posts/${this.props.match.params.id}`))
       .catch(error => {
         console.log(error);
       });
   }
 
   render() {
-    // note: name of the inputs must match the property names in state
     return (
       <div>
         <h2>Edit Post</h2>

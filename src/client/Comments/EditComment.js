@@ -5,8 +5,7 @@ import axios from 'axios';
 class EditComment extends Component {
   constructor(props) {
     super(props);
-    // store information relating to the user in state
-    // should match the user object from the API
+    // store user information in state
     this.state = {_id: '', username: '', description: '', post_id: ''};
 
     this.handleChange = this.handleChange.bind(this);
@@ -14,8 +13,7 @@ class EditComment extends Component {
   }
 
   componentDidMount() {
-    // when this Component mounts, fetch data relating to the user to be edited
-    // the user's ID is passed in via the URL and accessed via props
+    // get data relating to this comment via its id
     axios.get(`/api/users/folders/posts/comments/${this.props.match.params.id}`)
       .then(response => {
         this.setState({
@@ -31,28 +29,23 @@ class EditComment extends Component {
   }
 
   handleChange(event) {
-    // one of the input boxes changed, update the state to match
-    // note: name of the input boxes must match the property names in state
     const name = event.target.name;
     const value = event.target.value;
-
     this.setState({[name]: value});
   }
 
   handleSubmit(event) {
     event.preventDefault();
 
-    // send a PUT request to the server
-    // the request includes the state, which is the updated user information
+    // send a PUT request to the server with the id of the edited commit as a paramter
     axios.put(`/api/users/folders/posts/comments/${this.props.match.params.id}`, this.state)
-      .then(res => this.props.history.push('/')) // if successful go to home
+      .then(res => this.props.history.push('/'))
       .catch(error => {
         console.log(error);
       });
   }
 
   render() {
-    // note: name of the inputs must match the property names in state
     return (
       <div>
         <h2>Edit Folder</h2>

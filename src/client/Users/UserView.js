@@ -15,7 +15,7 @@ class UserView extends Component {
   }
 
   componentDidMount() {
-    // when the component mounts, fetch the user data from the server
+    // fetch data relating to user based on their id
     this.updateUsers();
     axios.get(`/api/users/${this.props.match.params.id}`)
       .then(response => {
@@ -27,7 +27,7 @@ class UserView extends Component {
   }
 
   updateUsers() {
-    // make a GET request to the server for the user data, store it in state
+    // make a new get request to update all user data on the screen
     axios.get(`/api/users/${this.props.match.params.id}`)
       .then(response => {
         this.setState({ users: response.data });
@@ -38,7 +38,7 @@ class UserView extends Component {
   }
 
   handleDelete(userId) {
-    // make a DELETE request to the server to remove the user with this userId
+    // make delete request where the user id is the passed in id below
     axios
       .delete(`/api/users/${this.props.match.params.id}`, {
         data: {
@@ -46,7 +46,6 @@ class UserView extends Component {
         }
       })
       .then(response => {
-        // if delete was successful, re-fetch the list of users, will trigger a re-render
         this.updateUsers();
       })
       .catch(error => {
@@ -55,7 +54,6 @@ class UserView extends Component {
   }
 
   render() {
-    // for each user object, produce a User Component
     return (
       <section className="section">
         <div>

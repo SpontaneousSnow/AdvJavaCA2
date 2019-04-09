@@ -8,7 +8,7 @@ import '../app.css';
 class UserList extends Component {
   constructor(props) {
     super(props);
-    // store the array of users in state
+    // store users in an array of objects
     this.state = { users: [] };
 
     this.updateUsers = this.updateUsers.bind(this);
@@ -16,7 +16,7 @@ class UserList extends Component {
   }
 
   componentDidMount() {
-    // when the component mounts, fetch the user data from the server
+    // get all users from server
     this.updateUsers();
     axios.get('/api/users')
       .then(response => {
@@ -28,7 +28,7 @@ class UserList extends Component {
   }
 
   updateUsers() {
-    // make a GET request to the server for the user data, store it in state
+    // make get request to get all users from server
     axios.get('api/users')
       .then(response => {
         this.setState({ users: response.data });
@@ -39,7 +39,7 @@ class UserList extends Component {
   }
 
   handleDelete(userId) {
-    // make a DELETE request to the server to remove the user with this userId
+    // make a delete request to  server to delete user where id is passed in id
     axios
       .delete('api/users', {
         data: {
@@ -47,7 +47,6 @@ class UserList extends Component {
         }
       })
       .then(response => {
-        // if delete was successful, re-fetch the list of users, will trigger a re-render
         this.updateUsers();
       })
       .catch(error => {
@@ -57,7 +56,7 @@ class UserList extends Component {
 
   render() {
 
-    // for each user object, produce a User Component
+    // for each user in list render component
     const userList = this.state.users.map(u => (
       <User
         key={u._id}
@@ -68,20 +67,6 @@ class UserList extends Component {
         age={u.age}
       />
     ));
-
-    // const userList = this.state.users.map((u) => {
-    //   const usernameMatch = u.username.startsWith(this.state.searchText);
-    //   return(usernameMatch) ? (
-    //     <User
-    //       key={u._id}
-    //       id={u._id}
-    //       username={u.username}
-    //       profile={u.profile}
-    //       fName={u.fName}
-    //       age={u.age}
-    //     />
-    //   ) : null;
-    // });
 
     return (
       <section className="section">

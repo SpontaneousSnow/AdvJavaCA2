@@ -7,16 +7,14 @@ import '../app.css';
 class FolderView extends Component {
   constructor(props) {
     super(props);
-    // store the array of users in state
+    // store folder as an object 
     this.state = { folder: {} };
 
-    //this.updateUsers = this.updateUsers.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
-    // when the component mounts, fetch the user data from the server
-    //this.updateUsers();
+    // make get request to folder where id matches params.id
     axios.get(`/api/users/folders/${this.props.match.params.id}`)
       .then(response => {
         this.setState({ user: response.data });
@@ -27,7 +25,7 @@ class FolderView extends Component {
   }
 
   updateFolders() {
-    // make a GET request to the server for the user data, store it in state
+    // make get to folders where id matches params.id
     axios.get(`/api/folders/${this.props.match.params.id}`)
       .then(response => {
         this.setState({ folders: response.data });
@@ -38,7 +36,7 @@ class FolderView extends Component {
   }
 
   handleDelete(folderId) {
-    // make a DELETE request to the server to remove the user with this userId
+    // make delete request where id is the passed in paramter
     axios
       .delete(`/api/folders/${this.props.match.params.id}`, {
         data: {
@@ -46,7 +44,6 @@ class FolderView extends Component {
         }
       })
       .then(response => {
-        // if delete was successful, re-fetch the list of users, will trigger a re-render
         this.updateFolders();
       })
       .catch(error => {
@@ -56,7 +53,6 @@ class FolderView extends Component {
 
   render() {
     console.log(this.state);
-    // for each user object, produce a User Component
     return (
       <section className="section">
         <div>

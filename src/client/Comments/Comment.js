@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+
+// Component will be used to render indivudal instances of the comments class
 class Comment extends React.Component {
 
-  // define what happens when this componet gets drawn on the UI
   render() {
     return (
       <div className="column is-3">        

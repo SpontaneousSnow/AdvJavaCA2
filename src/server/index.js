@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-// const mongo_uri = 'mongodb://localhost/instagram';
+// connect to mongodb - issue is that the password of the user is being shown
 const mongo_uri = 'mongodb+srv://simon:admin@advjavaca2-shkv6.mongodb.net/instagram?retryWrites=true';
 mongoose.connect(mongo_uri, { useNewUrlParser: true }, function(err) {
   if (err) {
@@ -29,6 +29,8 @@ mongoose.connect(mongo_uri, { useNewUrlParser: true }, function(err) {
   }
 });
 
+
+// get all users
 app.get('/api/users', (req, res) => {
   User.find({}, (err, result) => {
     if (err) throw err;
@@ -38,6 +40,8 @@ app.get('/api/users', (req, res) => {
   });
 });
 
+
+// get user where id is same as the passed in id
 app.get('/api/users/:id', (req, res) => {
   User.findOne({_id: new ObjectID(req.params.id) }, (err, result) => {
     if (err) throw err;
@@ -48,10 +52,10 @@ app.get('/api/users/:id', (req, res) => {
 });
 
 // creates
+// posts newly created folder information to the database with user id as forgein key
 app.post('/api/users/:id/folders', (req, res) => {
-  // create a new user object using the Mongoose model and the data sent in the POST
+  // using Folder mongoose model
   const folder = new Folder(req.body);
-  // save this object to the DB
   folder.save((err, result) => {
     if (err) throw err;
 
@@ -60,22 +64,21 @@ app.post('/api/users/:id/folders', (req, res) => {
   });
 });
 
+// posts newly created post information to the database with folder id as the forgein key
 app.post('/api/users/folders/:id/posts', (req, res) => {
-  // create a new user object using the Mongoose model and the data sent in the POST
+  // using Posts mongoose model
   const post = new Posts(req.body);
-  // save this object to the DB
   post.save((err, result) => {
     if (err) throw err;
     res.status(200).send({success:true});
     console.log('created in database');
-    // res.redirect('/api/users/folders/:id/posts');
   });
 });
 
+// posts newly created comments information to the database with post id as the forgein key
 app.post('/api/users/folders/posts/:id/comments', (req, res) => {
-  // create a new user object using the Mongoose model and the data sent in the POST
+  // using Comment mongoose model
   const comment = new Comment(req.body);
-  // save this object to the DB
   comment.save((err, result) => {
     if (err) throw err;
 
@@ -87,6 +90,7 @@ app.post('/api/users/folders/posts/:id/comments', (req, res) => {
 
 
 // deletes
+// delete user where id is the same as passed in id
 app.delete('/api/users', (req, res) => {
   User.deleteOne( {_id: new ObjectID(req.body.id) }, err => {
     if (err) return res.send(err);
@@ -96,6 +100,8 @@ app.delete('/api/users', (req, res) => {
   });
 });
 
+
+// delete folder where id is the same as passed in id
 app.delete('/api/users/folders/:id', withAuth, (req, res) => {
   Folder.deleteOne( {_id: new ObjectID(req.params.id) }, err => {
     if (err) return res.send(err);
@@ -105,6 +111,7 @@ app.delete('/api/users/folders/:id', withAuth, (req, res) => {
   });
 });
 
+// delete post where id is the same as passed in id
 app.delete('/api/users/folders/posts/:id', withAuth, (req, res) => {
   Posts.deleteOne( {_id: new ObjectID(req.params.id) }, err => {
     if (err) return res.send(err);
@@ -114,6 +121,8 @@ app.delete('/api/users/folders/posts/:id', withAuth, (req, res) => {
   });
 });
 
+
+// delete comment where id is the same as passed in id
 app.delete('/api/users/folders/posts/comments/:id', withAuth, (req, res) => {
   Comment.deleteOne( {_id: new ObjectID(req.params.id) }, err => {
     if (err) return res.send(err);
@@ -125,26 +134,24 @@ app.delete('/api/users/folders/posts/comments/:id', withAuth, (req, res) => {
 
 
 // Updates
+// send put request to user where id matches passed in id and update user with new information
 app.put('/api/users', (req, res) => {
-  // get the ID of the user to be updated
   const id  = req.body._id;
-  // remove the ID so as not to overwrite it when updating
   delete req.body._id;
-  // find a user matching this ID and update their details
+  // remove field as to not overwrite
   User.updateOne( {_id: new ObjectID(id) }, {$set: req.body}, (err, result) => {
     if (err) throw err;
-
     console.log('updated in database');
     return res.send({ success: true });
   });
 });
 
+
+// send put request to folder where id matches passed in id and update folder with new information
 app.put('/api/users/folders/:id', (req, res) => {
-  // get the ID of the user to be updated
   const id  = req.body._id;
-  // remove the ID so as not to overwrite it when updating
   delete req.body._id;
-  // find a user matching this ID and update their details
+  // remove field as to not overwrite
   Folder.updateOne( {_id: new ObjectID(id) }, {$set: req.body}, (err, result) => {
     if (err) throw err;
 
@@ -153,12 +160,12 @@ app.put('/api/users/folders/:id', (req, res) => {
   });
 });
 
+
+// send put request to post where id matches passed in id and update post with new information
 app.put('/api/users/folders/posts/:id', (req, res) => {
-  // get the ID of the user to be updated
   const id  = req.body._id;
-  // remove the ID so as not to overwrite it when updating
   delete req.body._id;
-  // find a user matching this ID and update their details
+  // remove field as to not overwrite
   Posts.updateOne( {_id: new ObjectID(id) }, {$set: req.body}, (err, result) => {
     if (err) throw err;
 
@@ -167,12 +174,12 @@ app.put('/api/users/folders/posts/:id', (req, res) => {
   });
 });
 
+// send put request to comment where id matches passed in id and update comment with new information
 app.put('/api/users/folders/posts/comments/:id', (req, res) => {
   // get the ID of the user to be updated
   const id  = req.body._id;
-  // remove the ID so as not to overwrite it when updating
+  // remove field as to not overwrite
   delete req.body._id;
-  // find a user matching this ID and update their details
   Comment.updateOne( {_id: new ObjectID(id) }, {$set: req.body}, (err, result) => {
     if (err) throw err;
 
@@ -188,7 +195,7 @@ app.get('/api/home/', function(req, res) {
   res.send('welcome');
 });
 
-
+// outdated code was used to get all users folders
 app.get('/api/users/folders', withAuth, function(req, res) {
   Folder.find({}, function(err, data) {
     if (err) throw err;
@@ -196,6 +203,7 @@ app.get('/api/users/folders', withAuth, function(req, res) {
   });
 });
 
+// getting all folders belonging to a user by their id
 app.get('/api/users/:id/folders', function(req, res) {
   User.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
@@ -208,6 +216,7 @@ app.get('/api/users/:id/folders', function(req, res) {
   });
 });
 
+// geting folder by its id
 app.get('/api/users/folders/:id', withAuth, function(req, res) {
   Folder.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
@@ -215,6 +224,7 @@ app.get('/api/users/folders/:id', withAuth, function(req, res) {
   });
 });
 
+// get all posts
 app.get('/api/users/folders/posts', withAuth, function(req, res) {
   Posts.find({}, function(err, data) {
     if (err) throw err;
@@ -222,6 +232,8 @@ app.get('/api/users/folders/posts', withAuth, function(req, res) {
   });
 });
 
+
+// find post where the id is equal to passed in id
 app.get('/api/users/folders/posts/:id', withAuth, function(req, res) {
   Posts.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
@@ -229,6 +241,8 @@ app.get('/api/users/folders/posts/:id', withAuth, function(req, res) {
   });
 });
 
+
+// find posts where folder id equals passed in id
 app.get('/api/users/folders/:id/posts', function(req, res) {
   Folder.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
@@ -241,6 +255,7 @@ app.get('/api/users/folders/:id/posts', function(req, res) {
   });
 });
 
+// get all comments
 app.get('/api/users/folders/posts/comments', function(req, res) {
   Comment.find({}, function(err, data) {
     if (err) throw err;
@@ -249,6 +264,8 @@ app.get('/api/users/folders/posts/comments', function(req, res) {
   });
 });
 
+
+// find comment where comment id matches passed in id
 app.get('/api/users/folders/posts/comments/:id', function(req, res) {
   Comment.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
@@ -257,6 +274,8 @@ app.get('/api/users/folders/posts/comments/:id', function(req, res) {
   });
 });
 
+
+// find all comments related to a post via post id
 app.get('/api/users/folders/posts/:id/comments', function(req, res) {
   Posts.findOne({_id: req.params.id}, function(err, data) {
     if (err) throw err;
@@ -269,6 +288,7 @@ app.get('/api/users/folders/posts/:id/comments', function(req, res) {
   });
 });
 
+// find a single user where the id matches the passed in id
 app.get('/api/user/:id', function(req, res) {
   if (err) throw err;
 

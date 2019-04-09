@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+// Component will be used to render indivudal instances of the folders class
 class Folder extends React.Component {
 
-  // define what happens when this componet gets drawn on the UI
   render() {
     return (
       <div className="column is-3">        

@@ -13,6 +13,8 @@ class CommentList extends Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
 
+
+  // request to get all comments where the post_id equals the passed in params id
   componentDidMount() {
     this.updateComments();
     axios.get(`/api/users/folders/posts/${this.props.match.params.id}/comments`)
@@ -24,6 +26,7 @@ class CommentList extends Component {
       });
   }
 
+  // updates the displayed comments if for isntance one was deleted since first viewing it
   updateComments() {
     axios.get(`/api/users/folders/posts/${this.props.match.params.id}/comments`)
       .then(response => {
@@ -34,6 +37,7 @@ class CommentList extends Component {
       });
   }
 
+  //sends delete request to the server to delete a comment with the passed in id
   handleDelete(commentId) {
     axios
       .delete(`/api/users/folders/posts/comments/${commentId}`)
@@ -45,8 +49,9 @@ class CommentList extends Component {
       });
   }
 
-  render() {
 
+  // render all comments by creating instances of the Comment file as a template to display info
+  render() {
     const commentList = this.state.comments.map(u => (
       <Comment
         key={u._id}
@@ -57,6 +62,7 @@ class CommentList extends Component {
       />
     ));
 
+    //return relevant button ands json data containing all comments in objects
     return (
       <div>
         {commentList.length ?

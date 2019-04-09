@@ -1,6 +1,7 @@
 const Comment = require('../models/Comment.js');
 const mongoose = require('mongoose');
 
+// declare fields
 const CommentSchema = mongoose.Schema({
   username: String,
   description: String,

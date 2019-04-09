@@ -7,6 +7,7 @@ import '../app.css';
 class PostsList extends Component {
   constructor(props) {
     super(props);
+    // set state to hold and array of post objects
     this.state = { posts: [] };
 
     this.updatePosts = this.updatePosts.bind(this);
@@ -15,6 +16,7 @@ class PostsList extends Component {
 
   componentDidMount() {
     this.updatePosts();
+    // make get request to server for all posts where folder id is params.id
     axios.get(`/api/users/folders/${this.props.match.params.id}/posts`)
       .then(response => {
         this.setState({ posts: response.data });
@@ -25,6 +27,7 @@ class PostsList extends Component {
   }
 
   updatePosts() {
+    // make get request to server for all posts where folder id is params.id
     axios.get(`/api/users/folders/${this.props.match.params.id}/posts`)
       .then(response => {
         this.setState({ posts: response.data });
@@ -34,6 +37,8 @@ class PostsList extends Component {
       });
   }
 
+
+  // make delete request where post id is equal to postId
   handleDelete(postId) {
     axios
       .delete(`/api/users/folders/posts/${postId}`)
@@ -45,6 +50,7 @@ class PostsList extends Component {
       });
   }
 
+  // render component using the post card as the template
   render() {
     const postsList = this.state.posts.map(u => (
       <Posts

@@ -1,6 +1,7 @@
 const Folder = require ('../models/Folder.js');
 const mongoose = require('mongoose');
 
+// declare fields
 const FolderSchema = mongoose.Schema({
   name: String,
   description: String,

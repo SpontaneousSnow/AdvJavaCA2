@@ -60,18 +60,12 @@ class App extends Component {
           <Route exact path="/users/:id/folders"  component={FolderList} />
           <Route exact path="/users/folders/:id/posts" component={PostsList} />
           <Route exact path="/users/folders/posts/:id/comments" component={CommentList} />
-          {/* <Route path="/users/:id/folders/:id"  component={withAuth(FolderView)} /> */}
           <Route exact path="/users/:id/create-folder" component={CreateFolder}/>
           <Route exact path="/users/edit-folder/:id" component={EditFolder}/>
           <Route exact path="/users/folders/:id/create-post" component={CreatePost}/>
           <Route exact path="/users/folders/edit-post/:id" component={EditPost}/>
           <Route exact path="/users/folders/posts/:id/create-comment" component={CreateComment}/>
           <Route exact path="/users/folders/posts/edit-comment/:id" component={EditComment}/>
-
-          <Route path="/posts" component={PostsList} />
-          <Route path="/comments/:id" component={withAuth(CommentList)} />
-
-          {/* <Route path="/posts/:id" component={withAuth(PostsList)} />*/}
           <Route path="/register" component={Register} />
           <Route path="/login" render={(props) => <Login {...props} handleLogin={this.login} />} />
           <Route path="/logout" render={this.logout}/>

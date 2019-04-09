@@ -5,7 +5,7 @@ import axios from 'axios';
 class CreateComment extends Component {
   constructor(props) {
     super(props);
-    // store form fields in state
+    // set all parameters within state
     this.state = {post_id: `${this.props.match.params.id}`, username: '', description: ''};
     console.log(this.state.post_id);
     this.handleChange = this.handleChange.bind(this);
@@ -13,28 +13,23 @@ class CreateComment extends Component {
   }
 
   handleChange(event) {
-    // one of the input boxes changed, update the state to match
-    // note: name of the input boxes must match the property names in state
     const name = event.target.name;
     const value = event.target.value;
-
     this.setState({[name]: value});
   }
 
   handleSubmit(event) {
     event.preventDefault();
 
-    // send a POST request to the server
-    // the request includes the state, which is the info. for the new user to be created
+    // send a POST request to the server with id of post as a paramter to get comments
     axios.post(`/api/users/folders/posts/${this.props.match.params.id}/comments`, this.state)
-      .then(res => this.props.history.push(`/users/folders/posts/${this.props.match.params.id}/comments`)) // if successful go to home
+      .then(res => this.props.history.push(`/users/folders/posts/${this.props.match.params.id}/comments`))
       .catch(error => {
         console.log(error);
       });
   }
 
   render() {
-    // note: name of the inputs must match the property names in state
     return (
       <div>
         <form onSubmit={this.handleSubmit}>

@@ -2,12 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 
-// Component to represent a single User 'Card'
-// note that the edit button navigates to a new URL (which will load a new Component via React Router)
-// whereas the delete button invokes a function in the parent Component
+// card component used as a template when rending a user object
 class UserDetailed extends React.Component {
 
-  // define what happens when this componet gets drawn on the UI
   render() {
     return (
       <div className="column is-3">

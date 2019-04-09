@@ -3,12 +3,10 @@ import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-// Component to represent a single User 'Card'
-// note that the edit button navigates to a new URL (which will load a new Component via React Router)
-// whereas the delete button invokes a function in the parent Component
+// Component will be used to render indivudal instances of the user class
+
 class User extends React.Component {
 
-  // define what happens when this componet gets drawn on the UI
   render() {
     return (
       <div className="column is-3">

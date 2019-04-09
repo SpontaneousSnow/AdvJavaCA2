@@ -7,6 +7,7 @@ import '../app.css';
 class FolderList extends Component {
   constructor(props) {
     super(props);
+    // store folders in an array of objects in state
     this.state = { folders: [] };
 
     this.updateFolders = this.updateFolders.bind(this);
@@ -15,6 +16,7 @@ class FolderList extends Component {
 
   componentDidMount() {
     this.updateFolders();
+    // get all folders where user id matches the foregin key in folders
     axios.get(`/api/users/${this.props.match.params.id}/folders`)
       .then(response => {
         this.setState({ folders: response.data });
@@ -25,6 +27,7 @@ class FolderList extends Component {
   }
 
   updateFolders() {
+    // same get request as above just updates screen incase of information change
     axios.get(`/api/users/${this.props.match.params.id}/folders`)
       .then(response => {
         this.setState({ folders: response.data });
@@ -34,6 +37,7 @@ class FolderList extends Component {
       });
   }
 
+  // make delete request where folder id is specified in being passed to server
   handleDelete(folderId) {
     axios
       .delete(`/api/users/folders/${folderId}`)
@@ -45,6 +49,7 @@ class FolderList extends Component {
       });
   }
 
+  // render a component card for each folder for the length of the list
   render() {
     const folderList = this.state.folders.map(u => (
       <Folder

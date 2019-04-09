@@ -5,17 +5,14 @@ import axios from 'axios';
 class EditFolder extends Component {
   constructor(props) {
     super(props);
-    // store information relating to the user in state
-    // should match the user object from the API
+    // store fields in state
     this.state = {_id: '', name: '', description: '',user_id: ''};
-
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    // when this Component mounts, fetch data relating to the user to be edited
-    // the user's ID is passed in via the URL and accessed via props
+    // make get request for folder infromation where id is equal to passed in id
     axios.get(`/api/users/folders/${this.props.match.params.id}`)
       .then(response => {
         this.setState({
@@ -32,8 +29,6 @@ class EditFolder extends Component {
   }
 
   handleChange(event) {
-    // one of the input boxes changed, update the state to match
-    // note: name of the input boxes must match the property names in state
     const name = event.target.name;
     const value = event.target.value;
 
@@ -42,18 +37,15 @@ class EditFolder extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
-    // send a PUT request to the server
-    // the request includes the state, which is the updated user information
+    // make put request where folder id is equal to params.id
     axios.put(`/api/users/folders/${this.props.match.params.id}`, this.state)
-      .then(res => this.props.history.push('/')) // if successful go to home
+      .then(res => this.props.history.push('/'))
       .catch(error => {
         console.log(error);
       });
   }
 
   render() {
-    // note: name of the inputs must match the property names in state
     return (
       <div>
         <h2>Edit Folder</h2>

@@ -1,6 +1,7 @@
 const Posts = require ('../models/Posts.js');
 const mongoose = require('mongoose');
 
+// declare fields
 const PostsSchema = mongoose.Schema({
   name: String,
   genre: String,

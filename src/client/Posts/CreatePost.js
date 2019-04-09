@@ -5,7 +5,7 @@ import axios from 'axios';
 class CreatePost extends Component {
   constructor(props) {
     super(props);
-    // store form fields in state
+    // store field information in state
     this.state = {folder_id: `${this.props.match.params.id}`, name: '', url:'', genre: '', description: ''};
     console.log(this.state.folder_id);
     this.handleChange = this.handleChange.bind(this);
@@ -13,8 +13,6 @@ class CreatePost extends Component {
   }
 
   handleChange(event) {
-    // one of the input boxes changed, update the state to match
-    // note: name of the input boxes must match the property names in state
     const name = event.target.name;
     const value = event.target.value;
 
@@ -24,21 +22,19 @@ class CreatePost extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    // send a POST request to the server
-    // the request includes the state, which is the info. for the new user to be created
+    // make post request to server where folder id matches params.id to be a forgein key for new post object
     axios.post(`/api/users/folders/${this.props.match.params.id}/posts`, this.state)
-      .then(res => this.props.history.push(`/users/folders${this.props.match.params.id}/posts`)) // if successful go to home
+      .then(res => this.props.history.push(`/users/folders${this.props.match.params.id}/posts`))
       .catch(error => {
         console.log(error);
       });
   }
 
   render() {
-    // note: name of the inputs must match the property names in state
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <h2>Create New Folder</h2>
+          <h2>Create New Post</h2>
           <label>
             Name:
             <input type="text" name="name" value={this.state.name} onChange={this.handleChange} />
